@@ -1,0 +1,16 @@
+{
+    "background.enabled": true,
+    "background.useDefault": false,
+    "background.useFront": false,
+    "background.loop": false,
+    "background.style": {
+        "background-size": "cover",
+        "position": "fixed",
+        "opacity": 0.2,
+        "height" : "100%",
+        "width": "70%"
+    },
+    "background.customImages": [
+        "https://64.media.tumblr.com/65d514bb3379a8e04fba2f9c2d541ee2/c7da8f6ac7670917-a7/s540x810/b49aefa95ae7c3079261347ba8a38342a3cd02c4.jpg"
+    ]
+}

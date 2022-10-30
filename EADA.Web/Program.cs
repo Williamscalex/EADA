@@ -1,27 +1,46 @@
-var builder = WebApplication.CreateBuilder(args);
+using EADA.Core.Contracts.Configuration;
+using EADA.Infrastructure.AppDbContext;
+using Microsoft.AspNetCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
-// Add services to the container.
-
-builder.Services.AddControllersWithViews();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+namespace EADA.Web
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var host = CreateWebHostBuilder(args).Build();
+
+            //seed db
+            using var scope = host.Services.CreateScope();
+
+            var services = scope.ServiceProvider;
+            IMainConfiguration config = null;
+            try
+            {
+                config = services.GetRequiredService<IMainConfiguration>();
+                var dbInitializer = services.GetRequiredService<IDatabaseInitializer>();
+                dbInitializer.SeedUsersAsync().Wait();
+                dbInitializer.EnsureStoredProcedures().Wait();
+            }
+            catch (Exception e)
+            {
+                var ex = new Exception(
+                    $"Error during database init. Connection string {config?.ConnectionStrings?.DefaultConnection ?? ""}",
+                    e);
+                throw new Exception("Unexpected error",ex);
+            }
+            host.Run();
+        }
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration(options =>
+            {
+                #if DEBUG
+                options.AddUserSecrets(typeof(IMainConfiguration).Assembly);
+                options.AddUserSecrets(typeof(Startup).Assembly);
+                #endif
+            })
+            .UseStartup<Startup>();
+    }
 }
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
-
-app.MapFallbackToFile("index.html"); ;
-
-app.Run();
