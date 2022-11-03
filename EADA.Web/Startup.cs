@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using System.Runtime.CompilerServices;
+using EADA.Core.ApplicationServices;
 using EADA.Core.Contracts;
+using EADA.Core.Contracts.ApplicationServices;
 using EADA.Core.Contracts.Configuration;
 using EADA.Core.Domain.Configuration;
 using EADA.Core.Extensions;
-using EADA.Infrastructure.AppDbContext;
+using EADA.Infrastructure;
+using EADA.Infrastructure.Contexts;
 using EADA.Infrastructure.Repositories;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Rbit.FluentValidation.Extensions;
 using ServiceCollectionExtensions = EADA.Core.Extensions.ServiceCollectionExtensions;
 
 namespace EADA.Web
@@ -43,18 +47,22 @@ namespace EADA.Web
             MainConfiguration.RegisterConfiguration(services, _mainConfiguration, true);
             services.AddDbContext<AppDbContext>(AppDbContext.GetOptionsConfigurator(_mainConfiguration));
             services.AddScoped(typeof(DbContext), typeof(AppDbContext));
+            services.AddRbitFluentValidationExtensions(assembles.core, assembles.dal, assembles.web);
 
             //Dynamically register all application services
             services.RegisterSectionByName("ApplicationServices",
                 typeof(IMainConfiguration).Assembly,
                 ServiceCollectionExtensions.Lifestyle.Scoped);
 
-            //Dynamically register all repositories, exluding the generic IRepository<> interface.
+            //Dynamically register all repositories, excluding the generic IRepository<> interface.
             services.RegisterSectionByName("Repositories", typeof(AppDbContext).Assembly,
                 ServiceCollectionExtensions.Lifestyle.Scoped,
                 new HashSet<Type>() {typeof(IRepository<>)});
 
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            services.AddScoped<IExpenseService, ExpenseService>();
 
             services.AddCors();
 
@@ -66,7 +74,8 @@ namespace EADA.Web
             services.Configure<MainConfiguration>(_configuration);
 
             //Repositories
-            
+            services.AddScoped<IUnitOfWork, HttpUnitOfWork>();
+
             //Db Creation and seeding
             services.AddScoped(typeof(IDatabaseInitializer), typeof(AppDbContext.DatabaseInitializer));
 
