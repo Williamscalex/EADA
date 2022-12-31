@@ -1,5 +1,5 @@
 using EADA.Core.Contracts.Configuration;
-using EADA.Infrastructure.AppDbContext;
+using EADA.Infrastructure.Contexts;
 using Microsoft.AspNetCore;
 using Microsoft.EntityFrameworkCore.Storage;
 

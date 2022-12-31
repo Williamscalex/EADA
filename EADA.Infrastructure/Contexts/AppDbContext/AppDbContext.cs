@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-using EADA.Core.Contracts.Configuration;
+﻿using EADA.Core.Contracts.Configuration;
+using EADA.Core.Domain.Mapped.Expense;
 using Microsoft.EntityFrameworkCore;
 
-namespace EADA.Infrastructure.AppDbContext;
+namespace EADA.Infrastructure.Contexts;
 
 public partial class AppDbContext :DbContext
 {
@@ -25,6 +25,10 @@ public partial class AppDbContext :DbContext
     //add dbsets here
     // EX: DbSet<testEntity> TestEntity {get; set;}
 
+    public DbSet<Expense> Expenses { get; set; }
+    public DbSet<ExpenseType> ExpenseTypes { get; set; }
+    public DbSet<ExpenseCategory> ExpensesCategories { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -32,6 +36,18 @@ public partial class AppDbContext :DbContext
         //add schemas and property things
         //EX: builder.Entity<testEntity>(x => {
         //})
+        builder.Entity<Expense>(t =>
+        {
+            t.HasIndex(x => x.ExpenseId);
+            t.HasIndex(x => x.ExpenseName).IsUnique();
+            t.Property(x => x.ExpenseName).HasMaxLength(50);
+            t.Property(x => x.CostPerMonth).HasColumnType("money");
+            t.HasOne(x => x.ExpenseType).WithMany().OnDelete(DeleteBehavior.Restrict);
+            t.HasOne(x => x.ExpenseCategory).WithMany().OnDelete(DeleteBehavior.Restrict);
+        });
+
+        builder.Entity<ExpenseCategory>();
+        builder.Entity<ExpenseType>();
     }
 
 }

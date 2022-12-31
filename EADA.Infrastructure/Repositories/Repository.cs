@@ -30,7 +30,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
             throw new InvalidOperationException(
                 $"Cannot build query base in repository before the local {nameof(_context)} property is set. Are you calling this function before you set the readonly context property> Or is the injected context null?");
         var eagerEntityPaths = _context.GetEagerIncludePaths(typeof(TEntity)).ToList();
-        if (eagerEntityPaths != null)
+        if (excludeEagerEntityPath != null)
         {
             foreach (var pathToExclude in excludeEagerEntityPath)
             {

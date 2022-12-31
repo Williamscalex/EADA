@@ -9,7 +9,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
-namespace EADA.Infrastructure.AppDbContext;
+namespace EADA.Infrastructure.Contexts;
 
 
 public interface IDatabaseInitializer

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using EADA.Core.Attributes;
-using EADA.Core.Common.AppConfirgurationBase.Exceptions;
+using EADA.Core.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
