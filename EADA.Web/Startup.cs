@@ -98,12 +98,12 @@ namespace EADA.Web
 
             if (_mainConfiguration.UseHttps) app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
+
             if (!env.IsDevelopment())
             {
-                app.UseStaticFiles();
+                app.UseSpaStaticFiles();
             }
-
-            app.UseStaticFiles();
 
 
             app.UseRouting();
@@ -115,6 +115,13 @@ namespace EADA.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.Use(async (context, next) =>
+            {
+                var ep = context.RequestServices.GetRequiredService<EndpointDataSource>();
+                var c = context;
+                await next();
+            });
 
             app.UseEndpoints(endpoints =>
             {

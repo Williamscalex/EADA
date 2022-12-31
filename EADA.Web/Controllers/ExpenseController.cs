@@ -18,13 +18,11 @@ public class ExpenseController: ControllerBase
 {
     private readonly IExpenseService _expenseService;
     private readonly IMapper _mapper;
-    private readonly IValidator<ExpenseArgs> _expenseValidator;
 
-    public ExpenseController(IExpenseService expenseService, IMapper mapper, IValidator<ExpenseArgs> expenseValidator)
+    public ExpenseController(IExpenseService expenseService, IMapper mapper)
     {
         _expenseService = expenseService;
         _mapper = mapper;
-        _expenseValidator = expenseValidator;
     }
 
     [Route("")]
@@ -71,7 +69,6 @@ public class ExpenseController: ControllerBase
     {
         try
         {
-            await _expenseValidator.ValidateCommonAsync(expenseArgs, CommonRuleSet.Edit);
 
             var result = await _expenseService.EditExpense(expenseArgs);
 
@@ -91,7 +88,6 @@ public class ExpenseController: ControllerBase
     {
         try
         {
-            await _expenseValidator.ValidateCommonAsync(expenseArgs, CommonRuleSet.Create);
 
             var result = await _expenseService.CreateExpense(expenseArgs);
 
@@ -105,8 +101,8 @@ public class ExpenseController: ControllerBase
         }
     }
 
-    [Route("{id:min(1)}")]
-    [HttpDelete]
+    [Route("delete/{id:min(1)}")]
+    [HttpPost]
     public async Task<IActionResult> DeleteExpense([FromRoute] int id)
     {
         try

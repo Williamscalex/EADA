@@ -1,0 +1,90 @@
+<div class="container-fluid wrapper" *ngIf="(data$ | async) as expenses">
+    <div class="row">
+        <div class="col-8">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>Expense List</mat-card-title>
+                    <mat-card-subtitle>monthly expense information</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col">
+                            <fieldset class="field-set">
+                                <legend class="legend-yearly"><span class="legend-text">Yearly Costs</span></legend>
+                                <div class="row">
+                                    <div class="col">
+                                        <mat-expansion-panel class="panel" matTooltip="Click for more details"
+                                        [matTooltipPosition]="'above'">
+                                            <mat-expansion-panel-header [collapsedHeight]="'45px'" [expandedHeight]="'45px'">
+                                                <mat-panel-title class="panel-title">
+                                                    <mat-icon>attach_money</mat-icon> Per Year: 
+                                                </mat-panel-title>
+                                                <mat-panel-description>
+                                                    {{getYearlyTotal(expenses) | currency}}
+                                                </mat-panel-description>
+                                            </mat-expansion-panel-header>
+                                            <div class="row">
+                                                <div class="col largest-title">
+                                                    <mat-icon>warning</mat-icon>
+                                                    Largest Expense:
+                                                </div>
+                                                <div class="col">{{getLargestExpense(expenses)}}</div>
+                                            </div>
+                                            <hr>
+                                            <div class="row ">
+                                               <div class="col">Per Month Total:</div>
+                                               <div class="col">{{getCostPerMonth(expenses) | currency}}</div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <fieldset class="field-set">
+                                <legend class="legend-expenses"><span class="legend-text">Expenses</span></legend>
+                                <!--Table-->
+                                <div class="row header-row">
+                                    <div class="col">Name</div>
+                                    <div class="col">Type</div>
+                                    <div class="col">Category</div>
+                                    <div class="col">Cost Per Month</div>
+                                </div>
+                                <!--Table Data-->
+                                    <div class="row data-row" *ngFor="let expense of expenses">
+                                        <div class="col">{{expense.expenseName}}</div>
+                                        <div class="col">{{expense.expenseType.typeName}}</div>
+                                        <div class="col">{{expense.expenseCategory.categoryName}}</div>
+                                        <div class="col">{{expense.costPerMonth | currency}}</div>
+                                    </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button>
+                        <mat-icon matTooltip="Create new expense">add</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+        <div class="col-4">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>Details</mat-card-title>
+                    <mat-card-subtitle>details for </mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    TBA
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button>
+                        <mat-icon matTooltip="edit expense">edit</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>
