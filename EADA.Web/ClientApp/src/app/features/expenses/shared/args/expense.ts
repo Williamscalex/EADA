@@ -5,17 +5,25 @@ import { ExpenseType } from './expense-type';
 export interface IExpense{
     expenseId : number;
     expenseName: string;
-    expenseType: ExpenseType;
-    expenseCategory: ExpenseCategory
-    costPerMonth: number;
+    expenseType?: ExpenseType;
+    expenseCategory?: ExpenseCategory
+    costPerMonth?: number;
+    costPerYear?:number;
+    description: string;
+    expenseTypeId: number;
+    expenseCategoryId: number;
 }
 
 export class Expense implements IExpense{
     expenseId: number = 0;
     expenseName: string = '';
-    expenseType: ExpenseType = new ExpenseType();
-    expenseCategory: ExpenseCategory = new ExpenseCategory();
-    costPerMonth: number = 0;
+    expenseType?: ExpenseType = new ExpenseType();
+    expenseCategory?: ExpenseCategory = new ExpenseCategory();
+    costPerMonth: number = null;
+    costPerYear: number = null;
+    description: string = '';
+    expenseTypeId: number = 0;
+    expenseCategoryId: number = 0;
 
 
     constructor(data?: Partial<IExpense>){

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EADA.Core.Constants;
 
 namespace EADA.Core.Domain.Mapped.Expense;
 
@@ -6,11 +7,11 @@ public class Expense
 {
     [Key]
     public int ExpenseId { get; set; }
-    [StringLength(50)]
+    [StringLength(SqlDataLength.Name)]
     public string ExpenseName { get; set; }
     public decimal? CostPerMonth { get; set; }
     public decimal? CostPerYear { get; set; }
-    [StringLength(150)]
+    [StringLength(SqlDataLength.Description)]
     public string Description { get; set; }
 
     public  int ExpenseTypeId { get; set; }

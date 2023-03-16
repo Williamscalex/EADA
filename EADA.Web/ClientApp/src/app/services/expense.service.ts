@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { map, Observable } from "rxjs";
+import { BehaviorSubject, map, Observable, switchAll } from "rxjs";
 import { ExpenseDataService } from "../api/expense-data.service";
-import { Expense } from "../features/expenses/shared/args/expense";
+import { Expense, IExpense } from "../features/expenses/shared/args/expense";
 
 @Injectable({
     providedIn: 'root',
@@ -10,9 +10,30 @@ import { Expense } from "../features/expenses/shared/args/expense";
 export class ExpenseService{
      constructor(private data: ExpenseDataService){}
 
+     private refreshSubject: BehaviorSubject<void> = new BehaviorSubject<void>(null);
+
      public getExpenses(): Observable<Expense[]>{
-        return this.data.getExpenses().pipe(
-            map(e => e.map(x => Expense.parse(x)))
-        )
+        return this.refreshSubject.pipe(
+            map(() => this.data.getExpenses()),
+            map(e => e.pipe(
+              map(data => data.map(x => Expense.parse(x)))
+            ))
+          ).pipe(
+            switchAll()
+          );
+     }
+
+     public createExpense(args: Expense): Observable<IExpense>{
+        return this.data.createExpense(args);
+     }
+
+     public getExpenseById(expenseId: number) : Observable<Expense>{
+        return this.data.getExpenseById(expenseId).pipe(
+            map(e => Expense.parse(e))
+        );
+     }
+
+     public refresh() : void {
+        this.refreshSubject.next();
      }
 }

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ExpenseCreateComponent } from './expense-create/expense-create.component';
 import { ExpenseListComponent } from './expense-list/expense-list.component';
 
 const routes : Routes  = [
@@ -11,6 +12,11 @@ const routes : Routes  = [
         path: '',
         component: ExpenseListComponent,
         data: {title:'Expense List'}
+      },
+      {
+        path:'create',
+        component:ExpenseCreateComponent,
+        data:{title: 'Create Expense'}
       }
     ]
   }

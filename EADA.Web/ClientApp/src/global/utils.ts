@@ -1,4 +1,6 @@
 import { HttpErrorResponse, HttpResponse, HttpResponseBase } from "@angular/common/http";
+import { ParamMap } from "@angular/router";
+import { distinctUntilChanged, filter, map, Observable } from "rxjs";
 
 export function baseUrl():string{
     let base = '';
@@ -68,6 +70,30 @@ Source extends Partial<Target>
         }
     })
 }
+
+export const mapFromParamId: (
+    idName: string,
+    nonZeroOnly?: boolean
+) => (source: Observable<ParamMap>) => Observable<number> = (
+    idName:string,
+    nonZeroOnly: boolean = false
+) => {
+    return source => source.pipe(
+        map(x => +x.get(idName)),
+        mapIdChange(nonZeroOnly)
+    );
+};
+
+export const mapIdChange:(
+    nonZeroOnly?: boolean
+) => (source: Observable<number>) => Observable<number> = (
+    nonZeroOnly: boolean = false
+) => {
+    return source => source.pipe(
+        distinctUntilChanged(),
+        filter(id => !nonZeroOnly || id > 0)
+    );
+};
 
 export const forin: <TObject extends object>(
     o: TObject,
