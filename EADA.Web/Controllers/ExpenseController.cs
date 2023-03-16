@@ -18,11 +18,13 @@ public class ExpenseController: ControllerBase
 {
     private readonly IExpenseService _expenseService;
     private readonly IMapper _mapper;
+    private readonly IValidator<ExpenseArgs> _validator;
 
-    public ExpenseController(IExpenseService expenseService, IMapper mapper)
+    public ExpenseController(IExpenseService expenseService, IMapper mapper, IValidator<ExpenseArgs> validator)
     {
         _expenseService = expenseService;
         _mapper = mapper;
+        _validator = validator;
     }
 
     [Route("")]
@@ -69,6 +71,7 @@ public class ExpenseController: ControllerBase
     {
         try
         {
+            await _validator.ValidateCommonAsync(expenseArgs, CommonRuleSet.Edit);
 
             var result = await _expenseService.EditExpense(expenseArgs);
 
@@ -88,6 +91,7 @@ public class ExpenseController: ControllerBase
     {
         try
         {
+            await _validator.ValidateCommonAsync(expenseArgs, CommonRuleSet.Create);
 
             var result = await _expenseService.CreateExpense(expenseArgs);
 
