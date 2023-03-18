@@ -9,6 +9,7 @@ using EADA.Core.Extensions;
 using EADA.Infrastructure;
 using EADA.Infrastructure.Contexts;
 using EADA.Infrastructure.Repositories;
+using FluentValidation.AspNetCore;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Mvc;
@@ -79,8 +80,12 @@ namespace EADA.Web
             //Db Creation and seeding
             services.AddScoped(typeof(IDatabaseInitializer), typeof(AppDbContext.DatabaseInitializer));
 
-
-            services.AddControllers();
+            //TODO fix obsolete fluent validation registration
+            services.AddControllers()
+                .AddFluentValidation(options =>
+                {
+                    options.RegisterValidatorsFromAssemblies(new[] { assembles.core, assembles.dal, assembles.web });
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMainConfiguration mainConfiguration)
