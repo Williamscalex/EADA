@@ -33,6 +33,10 @@ export class ExpenseService{
         );
      }
 
+     public deleteExpense(expenseId: number): Observable<any>{
+      return this.data.deleteExpense(expenseId);
+     }
+
      public refresh() : void {
         this.refreshSubject.next();
      }

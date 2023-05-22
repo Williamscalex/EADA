@@ -105,8 +105,8 @@ public class ExpenseController: ControllerBase
         }
     }
 
-    [Route("delete/{id:min(1)}")]
-    [HttpPost]
+    [Route("{id:min(1)}")]
+    [HttpDelete]
     public async Task<IActionResult> DeleteExpense([FromRoute] int id)
     {
         try
