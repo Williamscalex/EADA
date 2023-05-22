@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { ExpenseService } from 'src/app/services/expense.service';
 import { LoggerService } from 'src/app/services/logger.service';
+import { ExpenseHelper } from '../services/expense-create-helper';
 import { Expense } from '../shared/args/expense';
 
 @Component({
@@ -11,17 +12,11 @@ import { Expense } from '../shared/args/expense';
 })
 export class ExpenseListComponent implements OnInit {
 
-  constructor(private expenseService: ExpenseService, private logger : LoggerService) { 
+  constructor(public helper: ExpenseHelper, private expenseService: ExpenseService, private logger : LoggerService) { 
   }
 
-  columns: string[] = [
-    'expenseName',
-    'expenseType',
-    'expenseCategory',
-    'costPerMonth'
-  ];
-
   panelOpenState = false;
+  showDetails = false;
 
   data$ = this.expenseService.getExpenses().pipe(
     tap(x => this.logger.info('Expense data is loading in....', x))
@@ -30,7 +25,6 @@ export class ExpenseListComponent implements OnInit {
   ngOnInit(): void {
     
   }
-
    getYearlyTotal(expenses : Expense[]): number{
     let sum: number = 0;
     expenses.forEach(x => {
@@ -59,5 +53,19 @@ export class ExpenseListComponent implements OnInit {
 
     return largest?.expenseName;
   } 
+
+  onCreateClicked(): void{
+    this.helper.create();
+  }
+
+  onRowClick(expense: Expense){
+    this.logger.info('clicked');
+    if(this.showDetails === false){
+      this.showDetails = true;
+    }
+    else{
+      this.showDetails = false;
+    }
+  }
 
 }

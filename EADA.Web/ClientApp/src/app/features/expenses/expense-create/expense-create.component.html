@@ -1,0 +1,95 @@
+<div class="main-content" *ngIf="vm$ | async as vm">
+    <ng-container *ngIf="!helper.loading">
+        <div class="row">
+            <div class="col ">
+                <fieldset>
+                    <legend>Create Expense</legend>
+                    <form [formGroup]="vm.expenseForm">
+                        <div class="row d-flex justify-content-center align-items-center row-padding">
+                            <div class="col">
+                                <mat-form-field class="form-fields-data">
+                                    <mat-label>Expense Name</mat-label>
+                                    <input matInput type="text" formControlName="expenseName">
+                                    <mat-error *ngIf="vm?.expenseForm?.get('expenseName')?.errors?.required">A name is required</mat-error>
+                                    <mat-error *ngIf="vm?.expenseForm?.get('expenseName')?.errors?.maxlength">Name can not be long than 50 characters</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row align-items-center row-padding">
+                            <div class="col-6 d-flex justfiy-content-center">
+                                <mat-form-field class="form-fields-data">
+                                    <mat-label>Expense Type</mat-label>
+                                    <mat-select formControlName="expenseType">
+                                        <mat-option>-- Select One --</mat-option>
+                                        <mat-option [value]="1">Utility</mat-option>
+                                        <mat-option [value]="2">Food</mat-option>
+                                        <mat-option [value]="3">Housing</mat-option>
+                                    </mat-select>
+                                    <mat-error>A type is required</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6 d-flex justfiy-content-center">
+                                <mat-form-field class="form-fields-data">
+                                    <mat-label>Expense Category</mat-label>
+                                    <mat-select formControlName="expenseCategory">
+                                        <mat-option>-- Select One --</mat-option>
+                                        <mat-option [value]="1">Electric</mat-option>
+                                        <mat-option [value]="2">Subscription</mat-option>
+                                        <mat-option [value]="3">Rent/Mortgage</mat-option>
+                                    </mat-select>
+                                    <mat-error>A category is required</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-start row-padding">
+                            <div class="col-6">
+                                <mat-form-field class="form-fields-data">
+                                    <mat-label>Billing Cycle</mat-label>
+                                    <mat-select [(value)]="selectedBillingCycle">
+                                    <mat-option value="1">Per Month</mat-option>
+                                    <mat-option value="2">Per Year</mat-option>
+                                </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6" *ngIf="selectedBillingCycle === '1'">
+                                <mat-form-field class="form-fields-data">
+                                    <mat-label>Cost Per Month*</mat-label>
+                                    <span matPrefix>$&nbsp;</span>
+                                    <input matInput type="number" formControlName="costPerMonth">
+                                    <mat-hint>example: 45.50</mat-hint>
+                                    <mat-error *ngIf="vm?.expenseForm?.get('costPerMonth')?.errors?.atLeastOneValueRequired">cost per month required</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6" *ngIf="selectedBillingCycle === '2'">
+                                <mat-form-field class="form-fields-data">
+                                    <mat-label>Cost Per Year*</mat-label>
+                                    <span matPrefix>$&nbsp;</span>
+                                    <input matInput type="number" formControlName="costPerYear">
+                                    <mat-hint>example: 122.16</mat-hint>
+                                    <mat-error *ngIf="vm?.expenseForm?.get('costPerYear')?.errors?.atLeastOneValueRequired">cost per year required</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col">
+                                <mat-form-field class="form-fields-data">
+                                    <mat-label>Expense Description</mat-label>
+                                    <textarea matInput placeholder="Enter description here..." formControlName="description"></textarea>
+                                    <mat-error>Max character is 150</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row align-items-center btn-row">
+            <div class="col-6 d-flex justify-content-center">
+                <button class="mat-raised-button mat-button-base btn btn-danger" mat-raised-button type="button" (click)="onCancelClicked()">Cancel</button>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                <button class="mat-raised-button mat-button-base btn btn-success" [disabled]="disabled || vm?.expenseForm?.invalid" (click)="onSubmit()" mat-raised-button type="button">Submit</button>
+            </div>
+        </div>
+    </ng-container>
+</div>

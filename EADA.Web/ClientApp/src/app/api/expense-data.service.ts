@@ -64,7 +64,7 @@ export class ExpenseDataService extends EndpointBaseService{
      * @returns IExpense
      */
     public createExpense(args: Expense) : Observable<IExpense>{
-        const route = `${root}create`;
+        const route = `${root}/create`;
         return this.postJson<IExpense>(route,args).pipe(
             catchError(this.buildEndpointErrorHandler(true))
         );
