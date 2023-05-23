@@ -39,8 +39,9 @@
 }
 
 .wrapper {
+    height: 100vh;
     padding: 10px 20px 10px 20px;
-    width: 100%;
+    background-color: rgb(240, 240, 240)
   }
   
   
@@ -92,6 +93,12 @@
     color: rgb(172, 0, 0);
     padding-top: 2px;
     padding-bottom: 2px;
+  }
+
+  .drawer{
+    width: 600px;
+    height: 100vh;
+    background-color: rgb(240, 240, 240)
   }
 
 

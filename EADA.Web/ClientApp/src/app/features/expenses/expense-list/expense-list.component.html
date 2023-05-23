@@ -1,4 +1,4 @@
-<div class="container-fluid wrapper" *ngIf="(data$ | async) as expenses">
+    <mat-drawer-container class="wrapper d-flex flex-column mvh-100" *ngIf="(data$ | async) as expenses"> 
     <div class="row">
         <div class="col">
             <mat-card>
@@ -52,18 +52,14 @@
                                     <div class="col">Category</div>
                                     <div class="col">Cost Per Month</div>
                                     <div class="col">Cost Per Year</div>
-                                    <div class="col-1"></div>
                                 </div>
                                 <!--Table Data-->
-                                <div class="row data-row" *ngFor="let expense of expenses" (click)="onRowClick(expense)">
+                                <div class="row data-row" *ngFor="let expense of expenses" (click)="onRowClick(drawer,expense)">
                                     <div class="col d-flex align-items-center">{{expense.expenseName}}</div>
                                     <div class="col d-flex align-items-center">{{expense.expenseType.typeName}}</div>
                                     <div class="col d-flex align-items-center">{{expense.expenseCategory.categoryName}}</div>
                                     <div class="col d-flex align-items-center">{{monthCostCheck(expense)}}</div>
                                     <div class="col d-flex align-items-center">{{yearCostCheck(expense)}}</div>
-                                    <div class="col-1 d-flex justify-content-end">
-                                        <mat-icon (click)="onDeleteClicked(expense)" matTooltip="delete expense" class="delete-btn">delete</mat-icon>
-                                    </div>
                                 </div>
                             </fieldset>
                         </div>
@@ -76,21 +72,8 @@
                 </mat-card-actions>
             </mat-card>
         </div>
-        <div class="col-4" *ngIf="showDetails">
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>Details</mat-card-title>
-                    <mat-card-subtitle>details for </mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    TBA
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>
-                        <mat-icon matTooltip="edit expense">edit</mat-icon>
-                    </button>
-                </mat-card-actions>
-            </mat-card>
-        </div>
     </div>
-</div>
+    <mat-drawer (closedChange)="helper?.drawerService?.onToggleChanged()" class="drawer" position="end" #drawer>
+        <app-expense-edit-detail></app-expense-edit-detail>
+    </mat-drawer>
+    </mat-drawer-container>
