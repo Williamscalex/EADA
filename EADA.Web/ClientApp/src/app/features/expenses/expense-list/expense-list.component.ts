@@ -24,7 +24,7 @@ export class ExpenseListComponent implements OnInit {
   );
   
   ngOnInit(): void {
-    
+  
   }
    getYearlyTotal(expenses : Expense[]): number{
     let sum: number = 0;
@@ -66,6 +66,22 @@ export class ExpenseListComponent implements OnInit {
     }
     else{
       this.showDetails = false;
+    }
+  }
+
+  monthCostCheck(expense: Expense): string{
+    if(expense.costPerMonth === 0 || expense.costPerMonth == null){
+      return 'N/A'
+    } else{
+      return `$  ${expense.costPerMonth}`;
+    }
+  }
+
+  yearCostCheck(expense: Expense): string{
+    if(expense.costPerYear === 0 || expense.costPerYear == null){
+      return 'N/A'
+    } else {
+      return `$  ${expense.costPerYear}`;
     }
   }
 

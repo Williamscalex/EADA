@@ -51,15 +51,17 @@
                                     <div class="col">Type</div>
                                     <div class="col">Category</div>
                                     <div class="col">Cost Per Month</div>
-                                    <div class="col"></div>
+                                    <div class="col">Cost Per Year</div>
+                                    <div class="col-1"></div>
                                 </div>
                                 <!--Table Data-->
                                 <div class="row data-row" *ngFor="let expense of expenses" (click)="onRowClick(expense)">
                                     <div class="col d-flex align-items-center">{{expense.expenseName}}</div>
                                     <div class="col d-flex align-items-center">{{expense.expenseType.typeName}}</div>
                                     <div class="col d-flex align-items-center">{{expense.expenseCategory.categoryName}}</div>
-                                    <div class="col d-flex align-items-center">{{expense.costPerMonth | currency}}</div>
-                                    <div class="col d-flex justify-content-end">
+                                    <div class="col d-flex align-items-center">{{monthCostCheck(expense)}}</div>
+                                    <div class="col d-flex align-items-center">{{yearCostCheck(expense)}}</div>
+                                    <div class="col-1 d-flex justify-content-end">
                                         <mat-icon (click)="onDeleteClicked(expense)" matTooltip="delete expense" class="delete-btn">delete</mat-icon>
                                     </div>
                                 </div>
