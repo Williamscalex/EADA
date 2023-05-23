@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs';
+import { catchError, first, tap } from 'rxjs';
 import { ExpenseService } from 'src/app/services/expense.service';
 import { LoggerService } from 'src/app/services/logger.service';
 import { ExpenseHelper } from '../services/expense-create-helper';
 import { Expense } from '../shared/args/expense';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-expense-list',
@@ -66,6 +67,26 @@ export class ExpenseListComponent implements OnInit {
     else{
       this.showDetails = false;
     }
+  }
+
+  onDeleteClicked(expense: Expense): void {
+    Swal.fire({
+      icon: 'warning',
+      text: `Are you sure you want to delete ${expense.expenseName}?`,
+      showCancelButton: true,
+      showConfirmButton: true
+    }).then(result => {
+      if(result.isConfirmed){
+        this.expenseService.deleteExpense(expense.expenseId).pipe(first())
+        .subscribe({
+          next: () => this.expenseService.refresh()
+        });
+        Swal.close();
+      }
+      else{
+        Swal.close();
+      }
+    });
   }
 
 }

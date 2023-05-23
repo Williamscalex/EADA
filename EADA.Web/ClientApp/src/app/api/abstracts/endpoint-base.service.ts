@@ -38,10 +38,10 @@ export abstract class EndpointBaseService {
     if (err.status === 0) {
       this.navigationHelper.reportConnectionError();
     }
-    return throwError(err);
+    return throwError(() => new Error(err.message));
   }
 
-  protected deleteObj<T>(url: string, body?: object): Observable<T> {
+  protected deleteObj<T>(url: string, body?: object): Observable<T>{
     this.logger?.log('Preparing to delete object @ URL: ' + url, body);
     if (body) {
       const options = {
@@ -51,10 +51,12 @@ export abstract class EndpointBaseService {
         body,
       };
       return (this.http.delete<T>(url, options) as Observable<T>).pipe(
+        retryWhen(genericRetryStrategy({ includedStatusCodes: [0] })),
         catchError((err) => this.handleConnectionError(err))
       );
     } else {
       return this.http.delete<T>(url).pipe(
+        retryWhen(genericRetryStrategy({ includedStatusCodes: [0] })),
         catchError((err) => this.handleConnectionError(err))
       );
     }
@@ -145,4 +147,5 @@ export abstract class EndpointBaseService {
       }
     });
   }
+
 }

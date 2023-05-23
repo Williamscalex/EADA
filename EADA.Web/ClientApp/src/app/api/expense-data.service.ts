@@ -52,7 +52,7 @@ export class ExpenseDataService extends EndpointBaseService{
      * @returns IExpense
      */
     public editExpense(args: Expense) : Observable<IExpense>{
-        const route = `${root}edit/${args.expenseId}`;
+        const route = `${root}/edit/${args.expenseId}`;
         return this.postJson<IExpense>(route,args).pipe(
             catchError(this.buildEndpointErrorHandler(true))
         );
@@ -75,7 +75,7 @@ export class ExpenseDataService extends EndpointBaseService{
      * @param expenseId 
      */
     public deleteExpense(expenseId: number): Observable<any>{
-        const route = `${root}delete/${expenseId}`;
+        const route = `${root}/${expenseId}`;
         return this.deleteObj(route).pipe(
             catchError(this.buildEndpointErrorHandler(true))
         )
