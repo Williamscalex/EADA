@@ -6,13 +6,15 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ExpenseCreateComponent } from './expense-create/expense-create.component';
 import { ExpenseHelper } from './services/expense-create-helper';
 import { ExpenseVmSteps } from './expense-create/pipelines/expense-vm-steps';
+import { ExpenseEditDetailComponent } from './shared/components/expense-edit-detail/expense-edit-detail.component';
 
 
 
 @NgModule({
   declarations: [
     ExpenseListComponent,
-    ExpenseCreateComponent
+    ExpenseCreateComponent,
+    ExpenseEditDetailComponent
   ],
   imports: [
     ExpensesRoutingModule,

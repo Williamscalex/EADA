@@ -27,6 +27,10 @@ export class ExpenseService{
         return this.data.createExpense(args);
      }
 
+     public editExpense(args: Expense): Observable<IExpense>{
+      return this.data.editExpense(args);
+     }
+
      public getExpenseById(expenseId: number) : Observable<Expense>{
         return this.data.getExpenseById(expenseId).pipe(
             map(e => Expense.parse(e))

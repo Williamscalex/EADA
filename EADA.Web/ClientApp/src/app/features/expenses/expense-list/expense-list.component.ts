@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { catchError, first, tap } from 'rxjs';
+import { first, map, of, switchMap, tap } from 'rxjs';
 import { ExpenseService } from 'src/app/services/expense.service';
 import { LoggerService } from 'src/app/services/logger.service';
 import { ExpenseHelper } from '../services/expense-create-helper';
 import { Expense } from '../shared/args/expense';
-import Swal from 'sweetalert2';
+import { MatDrawer } from '@angular/material/sidenav';
+import { ExpenseDrawerService } from '../services/expense-drawer-service';
 
 @Component({
   selector: 'app-expense-list',
@@ -59,14 +60,22 @@ export class ExpenseListComponent implements OnInit {
     this.helper.create();
   }
 
-  onRowClick(expense: Expense){
-    this.logger.info('clicked');
-    if(this.showDetails === false){
-      this.showDetails = true;
-    }
-    else{
-      this.showDetails = false;
-    }
+  onRowClick(drawer: MatDrawer, expense: Expense){
+     of(expense).pipe(
+      first(),
+      tap(() => {
+        this.helper.expenseId = expense.expenseId,
+        this.helper.title= expense.expenseName,
+        this.helper.drawer = drawer;
+      }),
+      map(data => this.helper.load(data.expenseId,'edit'))
+     ).subscribe({
+      next: () => {
+        this.helper.drawerService = new ExpenseDrawerService(drawer);
+        this.helper.drawerService.openDrawer();
+      },
+      error: err => this.logger.crit('Error loading edit form...', err)
+     });
   }
 
   monthCostCheck(expense: Expense): string{
@@ -84,25 +93,4 @@ export class ExpenseListComponent implements OnInit {
       return `$  ${expense.costPerYear}`;
     }
   }
-
-  onDeleteClicked(expense: Expense): void {
-    Swal.fire({
-      icon: 'warning',
-      text: `Are you sure you want to delete ${expense.expenseName}?`,
-      showCancelButton: true,
-      showConfirmButton: true
-    }).then(result => {
-      if(result.isConfirmed){
-        this.expenseService.deleteExpense(expense.expenseId).pipe(first())
-        .subscribe({
-          next: () => this.expenseService.refresh()
-        });
-        Swal.close();
-      }
-      else{
-        Swal.close();
-      }
-    });
-  }
-
 }

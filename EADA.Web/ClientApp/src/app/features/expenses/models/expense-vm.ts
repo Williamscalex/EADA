@@ -29,6 +29,7 @@ export class ExpenseVm{
     expenseArgs: Expense= null;
     expenseForm: FormGroup = null;
     action: ExpenseAction = 'create';
+    expense: Expense = null;
 
     constructor(expense: Expense, form: FormGroup)
     constructor(data?: Partial<ExpenseVm>)
@@ -48,8 +49,8 @@ export class ExpenseVm{
     static buildForm(args: Expense, fb: FormBuilder): FormGroup {
         const form= fb.group({
             expenseName: fb.control(args.expenseName ?? null ,[Validators.required, Validators.maxLength(50)]),
-            expenseType: fb.control(args.expenseType ?? null, [Validators.required]),
-            expenseCategory: fb.control(args.expenseCategory ?? null,[Validators.required]),
+            expenseType: fb.control(args.expenseType.expenseTypeId ?? null, [Validators.required]),
+            expenseCategory: fb.control(args.expenseCategory.expenseCategoryId ?? null,[Validators.required]),
             costPerMonth: fb.control(args?.costPerMonth ?? null),
             costPerYear: fb.control(args?.costPerYear ?? null),
             description: fb.control(args.description ?? '', [Validators.maxLength(150)])

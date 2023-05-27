@@ -1,0 +1,102 @@
+<div class="container-fluid" *ngIf="helper.vm$ | async as vm">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col">
+            <mat-card class="card-main">
+                <mat-card-header *ngIf="!helper?.drawerService?.isEdit" class="header">
+                    <mat-card-title>Details</mat-card-title>
+                    <mat-card-subtitle>Details for {{helper.title}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-header *ngIf="helper?.drawerService?.isEdit" class="header">
+                    <mat-card-title>Edit</mat-card-title>
+                    <mat-card-subtitle>Edit {{helper.title}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <form [formGroup]="vm?.expenseForm" [class.disable-form]="!helper?.drawerService?.isEdit">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col">
+                                <mat-form-field [appearance]="helper?.drawerService?.appearance" class="form-fields-data" [hideRequiredMarker]="!helper?.drawerService?.isEdit">
+                                    <mat-label>Expense Name</mat-label>
+                                    <input matInput type="text" formControlName="expenseName" tabindex="-1">
+                                    <mat-error *ngIf="vm?.expenseForm?.get('expenseName')?.errors?.required">A name is required</mat-error>
+                                    <mat-error *ngIf="vm?.expenseForm?.get('expenseName')?.errors?.maxlength">Name can not be long than 50 characters</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center">
+                            <div class="col">
+                                <mat-form-field [appearance]="helper?.drawerService?.appearance" class="form-fields-data" [hideRequiredMarker]="!helper?.drawerService?.isEdit">
+                                    <mat-label>Expense Type</mat-label>
+                                    <mat-select formControlName="expenseType" [class.no-arrow]="!helper?.drawerService?.isEdit" tabindex="-1">
+                                        <mat-option>-- Select One --</mat-option>
+                                        <mat-option [value]="1">Utility</mat-option>
+                                        <mat-option [value]="2">Food</mat-option>
+                                        <mat-option [value]="3">Housing</mat-option>
+                                    </mat-select>
+                                    <mat-error>A type is required</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col">
+                                <mat-form-field [appearance]="helper?.drawerService?.appearance" class="form-fields-data" [hideRequiredMarker]="!helper?.drawerService?.isEdit">
+                                    <mat-label>Expense Category</mat-label>
+                                    <mat-select formControlName="expenseCategory" [class.no-arrow]="!helper?.drawerService?.isEdit" tabindex="-1">
+                                        <mat-option>-- Select One --</mat-option>
+                                        <mat-option [value]="1">Electric</mat-option>
+                                        <mat-option [value]="2">Subscription</mat-option>
+                                        <mat-option [value]="3">Rent/Mortgage</mat-option>
+                                    </mat-select>
+                                    <mat-error>A category is required</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <mat-form-field [appearance]="helper?.drawerService?.appearance" class="form-fields-data enable">
+                                    <mat-label>Billing Cycle</mat-label>
+                                    <mat-select [(value)]="selectedBillingCycle">
+                                    <mat-option value="1">Per Month</mat-option>
+                                    <mat-option value="2">Per Year</mat-option>
+                                </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6" *ngIf="selectedBillingCycle === '1'">
+                                <mat-form-field [appearance]="helper?.drawerService?.appearance" class="form-fields-data">
+                                    <mat-label>Cost Per Month*</mat-label>
+                                    <input matInput type="number" formControlName="costPerMonth" tabindex="-1">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6" *ngIf="selectedBillingCycle === '2'">
+                                <mat-form-field [appearance]="helper?.drawerService?.appearance" class="form-fields-data">
+                                    <mat-label>Cost Per Year*</mat-label>
+                                    <input matInput type="number" formControlName="costPerYear" tabindex="-1">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col">
+                                <mat-form-field [appearance]="helper?.drawerService?.appearance" class="form-fields-data">
+                                    <mat-label>Expense Description</mat-label>
+                                    <textarea matInput placeholder="Enter description here..." formControlName="description" tabindex="-1"></textarea>
+                                    <mat-error>Max character is 150</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </form>  
+                </mat-card-content>
+                <mat-card-actions>
+                    <button class="cancel-btn" *ngIf="helper?.drawerService?.isEdit" mat-button (click)="helper?.drawerService?.onEditClicked()">
+                        <mat-icon matTooltip="Cancel">cancel</mat-icon>
+                    </button>
+                    <button class="confirm-btn" *ngIf="helper?.drawerService?.isEdit" mat-button (click)="onConfirmClick()" [disabled]="vm?.expenseForm?.invalid">
+                        <mat-icon matTooltip="confirm">check</mat-icon>
+                    </button>
+                    <button *ngIf="!helper?.drawerService?.isEdit" mat-button (click)="helper?.drawerService?.onEditClicked()">
+                        <mat-icon matTooltip="edit expense">edit</mat-icon>
+                    </button>
+                    <button class="delete-btn" *ngIf="!helper?.drawerService?.isEdit" mat-button (click)="onDeleteClicked()">
+                        <mat-icon matTooltip="delete expense" class="delete-btn">delete</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>

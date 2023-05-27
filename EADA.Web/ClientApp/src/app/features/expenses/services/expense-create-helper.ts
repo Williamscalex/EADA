@@ -1,17 +1,19 @@
 import { Injectable } from "@angular/core";
 import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
-import { BehaviorSubject, debounceTime, filter, first, map, of, shareReplay, Subject, takeUntil, tap } from "rxjs";
+import { BehaviorSubject, combineLatest, debounceTime, filter, first, map, of, shareReplay, Subject, switchMap, takeUntil, tap } from "rxjs";
 import { LoggerService } from "src/app/services/logger.service";
 import { ExpenseCreateComponent } from "../expense-create/expense-create.component";
 import { ExpenseVmSteps } from "../expense-create/pipelines/expense-vm-steps";
 import { ExpenseDialogData } from "../models/expense-dialog-data";
 import { ExpenseAction, ExpenseVm } from "../models/expense-vm";
+import { MatDrawer } from "@angular/material/sidenav";
+import { ExpenseDrawerService } from "./expense-drawer-service";
 
 @Injectable()
 export class ExpenseHelper{
     constructor(private logger: LoggerService,
          private expenseVmSteps: ExpenseVmSteps,
-         private dialog: MatDialog){}
+         private dialog: MatDialog){ }
 
     public loading: boolean = false;
     public saving: boolean= false;
@@ -21,6 +23,9 @@ export class ExpenseHelper{
     private _loaded$=  new BehaviorSubject<{expenseVm: ExpenseVm}>(null);
     private _destroy$ = new Subject();
     public action: ExpenseAction = null;
+    public title: string = '';
+    public drawer: MatDrawer = null;
+    public drawerService: ExpenseDrawerService = null;
 
     public destroy$ = this._destroy$.pipe(
         debounceTime(100),
@@ -64,7 +69,10 @@ export class ExpenseHelper{
                 this.loading = false;
             },
             error: err => {
-                this.dialogRef.close();
+                if(this.dialogRef){
+                    this.dialogRef.close();
+                }
+                this.logger.crit('failed to load vm');
                 this.destroy()
             }
         });
