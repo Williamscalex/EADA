@@ -54,7 +54,7 @@ export class ExpenseVm{
             costPerMonth: fb.control(args?.costPerMonth ?? null),
             costPerYear: fb.control(args?.costPerYear ?? null),
             description: fb.control(args.description ?? '', [Validators.maxLength(150)])
-        },{ validator: atLeastOneValueValidator() });
+        }, {validators: atLeastOneValueValidator()});
 
         return form;
     }
