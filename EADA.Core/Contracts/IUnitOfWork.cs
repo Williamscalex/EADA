@@ -7,6 +7,7 @@ public interface IUnitOfWork
     #region Repositories
 
     IRepository<Expense> Expense { get; }
+    IRepository<ExpenseCategory> ExpenseCategory { get; }
 
     #endregion
 
