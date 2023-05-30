@@ -27,7 +27,7 @@ public class ExpenseCategoryService : IExpenseCategoryService
     public async Task<ExpenseCategory> GetCategoryById(int id)
     {
         var expense = await _uow.ExpenseCategory.Query()
-            .FirstOrDefaultAsync(x => x.ExpenseCategoryId == id);
+            .FirstOrDefaultAsync(x => x.ExpenseCategoryId == id && !x.IsSystemDefault);
         if (expense == null) 
             throw new HandledException($"Failed to retrieve the expense category with {id}.");
 
@@ -51,7 +51,7 @@ public class ExpenseCategoryService : IExpenseCategoryService
     public async Task<ExpenseCategory> EditCategory(ExpenseCategoryArgs args)
     {
         var expense = await _uow.ExpenseCategory.Query()
-            .FirstOrDefaultAsync(x => x.ExpenseCategoryId == args.ExpenseCategoryId);
+            .FirstOrDefaultAsync(x => x.ExpenseCategoryId == args.ExpenseCategoryId && !x.IsSystemDefault);
 
         if (expense == null)
             throw new HandledException($"Failed to retrieve expense category with id {args.ExpenseCategoryId}");
@@ -65,11 +65,11 @@ public class ExpenseCategoryService : IExpenseCategoryService
         return editExpense;
     }
 
-    //TODO may need to have a certain number of categories that are system defaults that cannot be removed.
+    
     public async Task DeleteCategory(int id)
     {
         var expense = await _uow.ExpenseCategory.Query()
-            .FirstOrDefaultAsync(x => x.ExpenseCategoryId == id);
+            .FirstOrDefaultAsync(x => x.ExpenseCategoryId == id && !x.IsSystemDefault);
 
         if (expense == null) return;
 
