@@ -52,7 +52,12 @@ public partial class AppDbContext :DbContext
             t.Property(x => x.CategoryName).HasMaxLength(50);
             t.Property(x => x.IsSystemDefault).HasDefaultValue(false);
         });
-        builder.Entity<ExpenseType>();
+        builder.Entity<ExpenseType>(t =>
+        {
+            t.HasIndex(x => x.TypeName).IsUnique();
+            t.Property(x => x.TypeName).HasMaxLength(50);
+            t.Property(x => x.IsSystemDefault).HasDefaultValue(false);
+        });
     }
 
 }

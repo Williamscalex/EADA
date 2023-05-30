@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace EADA.Core.Domain.Messages.Dto;
 
-namespace EADA.Core.Domain.Mapped.Expense;
-
-public class ExpenseType
+public class ExpenseTypeDto
 {
-    [Key]
     public int ExpenseTypeId { get; set; }
     public string TypeName { get; set; }
     public bool IsSystemDefault { get; set; }

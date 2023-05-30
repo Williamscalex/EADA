@@ -16,6 +16,7 @@ public class UnitOfWork : IUnitOfWork
 
     private IRepository<Expense> _expenses;
     private IRepository<ExpenseCategory> _expensesCategory;
+    private IRepository<ExpenseType> _expenseType;
 
     public UnitOfWork(
         AppDbContext context,
@@ -27,6 +28,7 @@ public class UnitOfWork : IUnitOfWork
 
     public IRepository<Expense> Expense => _expenses ??= BuildRepository<Expense>();
     public IRepository<ExpenseCategory> ExpenseCategory =>_expensesCategory ??= BuildRepository<ExpenseCategory>();
+    public IRepository<ExpenseType> ExpenseType => _expenseType ??= BuildRepository<ExpenseType>();
 
     public int SaveChanges()
     {
