@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EADA.Web.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public class ExpenseTypeController : ControllerBase
 {
     private readonly IMapper _mapper;
@@ -100,7 +102,7 @@ public class ExpenseTypeController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("")]
+    [Route("{id:min(1)}")]
     public async Task<IActionResult> DeleteExpenseType(int id)
     {
         try

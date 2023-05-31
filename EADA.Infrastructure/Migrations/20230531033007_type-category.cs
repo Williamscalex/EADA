@@ -8,14 +8,6 @@ namespace EADA.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Expenses_ExpensesCategories_ExpenseCategoryId",
-                table: "Expenses");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Expenses_ExpenseTypes_ExpenseTypeId",
-                table: "Expenses");
-
             migrationBuilder.AlterColumn<string>(
                 name: "TypeName",
                 table: "ExpenseTypes",
@@ -63,34 +55,10 @@ namespace EADA.Infrastructure.Migrations
                 column: "CategoryName",
                 unique: true,
                 filter: "[CategoryName] IS NOT NULL");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Expenses_ExpensesCategories_ExpenseCategoryId",
-                table: "Expenses",
-                column: "ExpenseCategoryId",
-                principalTable: "ExpensesCategories",
-                principalColumn: "ExpenseCategoryId",
-                onDelete: ReferentialAction.SetNull);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Expenses_ExpenseTypes_ExpenseTypeId",
-                table: "Expenses",
-                column: "ExpenseTypeId",
-                principalTable: "ExpenseTypes",
-                principalColumn: "ExpenseTypeId",
-                onDelete: ReferentialAction.SetNull);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Expenses_ExpensesCategories_ExpenseCategoryId",
-                table: "Expenses");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Expenses_ExpenseTypes_ExpenseTypeId",
-                table: "Expenses");
-
             migrationBuilder.DropIndex(
                 name: "IX_ExpenseTypes_TypeName",
                 table: "ExpenseTypes");
@@ -126,22 +94,6 @@ namespace EADA.Infrastructure.Migrations
                 oldType: "nvarchar(50)",
                 oldMaxLength: 50,
                 oldNullable: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Expenses_ExpensesCategories_ExpenseCategoryId",
-                table: "Expenses",
-                column: "ExpenseCategoryId",
-                principalTable: "ExpensesCategories",
-                principalColumn: "ExpenseCategoryId",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Expenses_ExpenseTypes_ExpenseTypeId",
-                table: "Expenses",
-                column: "ExpenseTypeId",
-                principalTable: "ExpenseTypes",
-                principalColumn: "ExpenseTypeId",
-                onDelete: ReferentialAction.Restrict);
         }
     }
 }

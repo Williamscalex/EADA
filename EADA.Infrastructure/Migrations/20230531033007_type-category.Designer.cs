@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EADA.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230530041118_type-category")]
+    [Migration("20230531033007_type-category")]
     partial class typecategory
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,13 +124,13 @@ namespace EADA.Infrastructure.Migrations
                     b.HasOne("EADA.Core.Domain.Mapped.Expense.ExpenseCategory", "ExpenseCategory")
                         .WithMany()
                         .HasForeignKey("ExpenseCategoryId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EADA.Core.Domain.Mapped.Expense.ExpenseType", "ExpenseType")
                         .WithMany()
                         .HasForeignKey("ExpenseTypeId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ExpenseCategory");

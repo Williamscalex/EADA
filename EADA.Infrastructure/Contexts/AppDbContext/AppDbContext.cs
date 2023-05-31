@@ -42,8 +42,8 @@ public partial class AppDbContext :DbContext
             t.HasIndex(x => x.ExpenseName).IsUnique();
             t.Property(x => x.ExpenseName).HasMaxLength(50);
             t.Property(x => x.CostPerMonth).HasColumnType("money");
-            t.HasOne(x => x.ExpenseType).WithMany().OnDelete(DeleteBehavior.SetNull);
-            t.HasOne(x => x.ExpenseCategory).WithMany().OnDelete(DeleteBehavior.SetNull);
+            t.HasOne(x => x.ExpenseType).WithMany().OnDelete(DeleteBehavior.Restrict);
+            t.HasOne(x => x.ExpenseCategory).WithMany().OnDelete(DeleteBehavior.Restrict);
         });
 
         builder.Entity<ExpenseCategory>(t =>

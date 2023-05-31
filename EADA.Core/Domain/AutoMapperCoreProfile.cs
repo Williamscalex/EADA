@@ -20,6 +20,9 @@ public class AutoMapperCoreProfile : Profile
         CreateMap<ExpenseCategoryArgs, ExpenseCategory>()
             .ForMember(x => x.ExpenseCategoryId, 
                 map => map.Condition(x => x.ExpenseCategoryId > 0));
+        CreateMap<ExpenseType, ExpenseTypeDto>();
+        CreateMap<ExpenseTypeArgs, ExpenseType>()
+            .ForMember(x => x.ExpenseTypeId, map => map.Condition(x => x.ExpenseTypeId > 0));
 
         #endregion
     }

@@ -5,6 +5,7 @@ using EADA.Core.Contracts;
 using EADA.Core.Contracts.ApplicationServices;
 using EADA.Core.Contracts.Configuration;
 using EADA.Core.Domain.Configuration;
+using EADA.Core.Domain.Mapped.Expense;
 using EADA.Core.Extensions;
 using EADA.Infrastructure;
 using EADA.Infrastructure.Contexts;
@@ -64,6 +65,8 @@ namespace EADA.Web
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddScoped<IExpenseService, ExpenseService>();
+            services.AddScoped<IExpenseTypeService, ExpenseTypeService>();
+            services.AddScoped<IExpenseCategoryService, ExpenseCategoryService>();
 
             services.AddCors();
 
