@@ -6,6 +6,8 @@ import { ExpenseHelper } from '../services/expense-create-helper';
 import { Expense } from '../shared/args/expense';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ExpenseDrawerService } from '../services/expense-drawer-service';
+import { MatMenuPanel } from '@angular/material/menu';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-expense-list',
@@ -59,6 +61,14 @@ export class ExpenseListComponent implements OnInit {
   onCreateClicked(): void{
     this.helper.create();
   }
+
+  onPanelClicked(panel: MatExpansionPanel): string{
+    if(panel.expanded){
+      return "Click for less details";
+    } else {
+      return "Click for more details";
+    }
+  };
 
   onRowClick(drawer: MatDrawer, expense: Expense){
      of(expense).pipe(
