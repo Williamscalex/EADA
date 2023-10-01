@@ -1,8 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSelectChange } from '@angular/material/select';
-import { catchError, first, map, of, switchMap, takeUntil, tap } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { catchError, first, map, of, switchMap, takeUntil } from 'rxjs';
 import { ExpenseService } from 'src/app/services/expense.service';
 import { LoggerService } from 'src/app/services/logger.service';
 import Swal from 'sweetalert2';

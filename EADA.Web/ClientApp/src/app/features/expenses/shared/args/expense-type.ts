@@ -5,11 +5,16 @@ export interface IExpenseType{
     typeName : string;
 }
 
+export interface IExpenseTypeArgs {
+    expenseTypeId : number;
+    typeName : string;
+}
+
 export class ExpenseType implements IExpenseType{
     expenseTypeId: number = 0;
     typeName: string = '';
 
-    constructor(data?: Partial<IExpenseType>){
+    private constructor(data?: Partial<IExpenseType>){
         if(data)
             assignMatchesExcept(this as IExpenseType, data);
     }
@@ -18,4 +23,19 @@ export class ExpenseType implements IExpenseType{
         if(data instanceof ExpenseType) return data;
         return new ExpenseType(data);
     }
+}
+
+export class ExpenseTypeArgs implements IExpenseTypeArgs{
+    expenseTypeId: number = 0;
+    typeName: string = '';
+
+    private constructor(data?: Partial<IExpenseTypeArgs>){
+        if(data) assignMatchesExcept(this as ExpenseTypeArgs,data);
+    }
+
+    public static parse(data?: Partial<IExpenseTypeArgs>): ExpenseTypeArgs{
+        if(data instanceof ExpenseTypeArgs) return data;
+        return new ExpenseTypeArgs(data);
+    }
+
 }

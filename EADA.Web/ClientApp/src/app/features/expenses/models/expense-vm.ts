@@ -1,6 +1,7 @@
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { assignMatchesExcept, newId } from "@global/utils";
 import { Expense } from "../shared/args/expense";
+import { ExpenseType } from "../shared/args/expense-type";
 
 export type ExpenseAction = 'create'| 'edit';
 
@@ -30,6 +31,7 @@ export class ExpenseVm{
     expenseForm: FormGroup = null;
     action: ExpenseAction = 'create';
     expense: Expense = null;
+    expenseTypes: ExpenseType[] = [];
 
     constructor(expense: Expense, form: FormGroup)
     constructor(data?: Partial<ExpenseVm>)

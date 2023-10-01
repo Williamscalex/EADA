@@ -65,9 +65,9 @@ public class ExpenseController: ControllerBase
         }
     }
 
-    [Route("edit/{id:min(1)}")]
+    [Route("edit")]
     [HttpPost]
-    public async Task<IActionResult> EditExpense([FromBody] ExpenseArgs expenseArgs, [FromRoute] int id)
+    public async Task<IActionResult> EditExpense([FromBody] ExpenseArgs expenseArgs)
     {
         try
         {

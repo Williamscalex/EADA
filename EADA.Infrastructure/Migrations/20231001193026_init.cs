@@ -4,7 +4,7 @@
 
 namespace EADA.Infrastructure.Migrations
 {
-    public partial class Expense : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,8 @@ namespace EADA.Infrastructure.Migrations
                 {
                     ExpenseCategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CategoryName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    IsSystemDefault = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -27,7 +28,8 @@ namespace EADA.Infrastructure.Migrations
                 {
                     ExpenseTypeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TypeName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TypeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    IsSystemDefault = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -40,10 +42,12 @@ namespace EADA.Infrastructure.Migrations
                 {
                     ExpenseId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ExpenseName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ExpenseName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CostPerMonth = table.Column<decimal>(type: "money", nullable: true),
+                    CostPerYear = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     ExpenseTypeId = table.Column<int>(type: "int", nullable: false),
-                    ExpenseCategoryId = table.Column<int>(type: "int", nullable: false),
-                    CostPerMonth = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    ExpenseCategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,13 +57,13 @@ namespace EADA.Infrastructure.Migrations
                         column: x => x.ExpenseCategoryId,
                         principalTable: "ExpensesCategories",
                         principalColumn: "ExpenseCategoryId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Expenses_ExpenseTypes_ExpenseTypeId",
                         column: x => x.ExpenseTypeId,
                         principalTable: "ExpenseTypes",
                         principalColumn: "ExpenseTypeId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -76,12 +80,27 @@ namespace EADA.Infrastructure.Migrations
                 name: "IX_Expenses_ExpenseName",
                 table: "Expenses",
                 column: "ExpenseName",
-                unique: true);
+                unique: true,
+                filter: "[ExpenseName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Expenses_ExpenseTypeId",
                 table: "Expenses",
                 column: "ExpenseTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpensesCategories_CategoryName",
+                table: "ExpensesCategories",
+                column: "CategoryName",
+                unique: true,
+                filter: "[CategoryName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpenseTypes_TypeName",
+                table: "ExpenseTypes",
+                column: "TypeName",
+                unique: true,
+                filter: "[TypeName] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

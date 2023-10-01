@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, map, Observable, switchAll } from "rxjs";
-import { ExpenseDataService } from "../api/expense-data.service";
 import { Expense, IExpense } from "../features/expenses/shared/args/expense";
+import { ExpenseDataService } from "../api/expenses/expense-data.service";
 
 @Injectable({
     providedIn: 'root',
